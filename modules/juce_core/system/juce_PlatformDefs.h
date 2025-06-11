@@ -93,8 +93,18 @@ namespace juce
   #define JUCE_BREAK_IN_DEBUGGER        { __builtin_debugtrap(); }
 #elif JUCE_ANDROID
   #define JUCE_BREAK_IN_DEBUGGER        { __builtin_trap(); }
+#elif JUCE_ARM
+  #if JUCE_NO_INLINE_ASM
+    #define JUCE_BREAK_IN_DEBUGGER       { }
+  #else
+    #define JUCE_BREAK_IN_DEBUGGER       { __asm__ volatile(".inst 0xd4200000"); }
+  #endif
 #else
-  #define JUCE_BREAK_IN_DEBUGGER        { __asm int 3 }
+  #if JUCE_NO_INLINE_ASM
+    #define JUCE_BREAK_IN_DEBUGGER       { }
+  #else
+    #define JUCE_BREAK_IN_DEBUGGER       { __asm int 3 }
+  #endif
 #endif
 
 #if JUCE_CLANG && defined (__has_feature) && ! defined (JUCE_ANALYZER_NORETURN)
