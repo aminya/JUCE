@@ -92,7 +92,7 @@
   #endif
  #endif
 
- #if JUCE_64BIT && JUCE_WINDOWS
+ #if JUCE_64BIT && JUCE_WINDOWS && !JUCE_CLANG
   #include <arm64_neon.h>
  #else
   #include <arm_neon.h>
